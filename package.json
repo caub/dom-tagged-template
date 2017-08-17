@@ -1,0 +1,30 @@
+{
+  "name": "dom-tagged-template",
+  "version": "1.0.0",
+  "description": "tagged template function for DOM building",
+  "main": "index.js",
+  "scripts": {
+    "test": "node test"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/caub/dom-tagged-template.git"
+  },
+  "keywords": [
+    "DOM",
+    "tagged",
+    "template",
+    "jsx",
+    "create",
+    "element"
+  ],
+  "author": "caub",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/caub/dom-tagged-template/issues"
+  },
+  "homepage": "https://github.com/caub/dom-tagged-template#readme",
+  "devDependencies": {
+    "jsdom": "^11.1.0"
+  }
+}
