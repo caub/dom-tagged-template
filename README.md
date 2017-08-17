@@ -1,4 +1,4 @@
-## DOM helper to create elements/fragments similarly to jsx
+## DOM helper to create elements/fragments similarly to jsx [![Build Status](https://travis-ci.org/caub/dom-tagged-template.svg?branch=master)](https://travis-ci.org/caub/dom-tagged-template)
 
 ```js
 const $ = require('dom-tagged-template');
@@ -19,3 +19,5 @@ const fragment = $`
 `;
 
 ```
+
+[live example](https://jsfiddle.net/crl/hmth3ru7/1)

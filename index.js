@@ -18,7 +18,13 @@ example usage:
 $`<div><u onClick=${console.log}>Hello ${'!'.repeat(4)}</u></div>`
 */
 
-module.exports = $;
+if (typeof module==='object') {
+	module.exports = $;
+} else {
+	if (!window.$) window.$ = $;
+	window.HTML = $;
+}
+
 
 function $(strs, ...o) {
 	const s = strs[0].trim();
@@ -86,7 +92,6 @@ function parseText(container, stack, I=0, J=0) {
 				i = i2;
 				j = j2;
 
-
 				if (!isAutoClosed) { // recurse with the inside of this tag
 
 					const [i3, j3, endTag] = parseText(el, stack, i, j);
@@ -96,13 +101,9 @@ function parseText(container, stack, I=0, J=0) {
 					if (endTag!==tag) throw new Error(`non-matching tags <${tag}>..</${endTag}>`);
 				}
 			}
-			
-		} else if (Array.isArray(item)) {
-			container.append(...item);
-			i++;
-			j = 0;
+
 		} else {
-			container.append(item);
+			container.append(...(Array.isArray(item) ? item : [item]));
 			i++;
 			j = 0;
 		}
@@ -135,8 +136,6 @@ function parseAttributes(element, stack, I=0, J=0) {
 					j += m.index + m[0].length;
 
 					const value = m[1]||m[2];
-
-
 
 					if (value !== undefined) {
 						element.setAttribute(name, value);
