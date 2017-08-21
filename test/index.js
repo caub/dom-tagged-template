@@ -26,6 +26,7 @@ assert.equal($`<u ok=2/>`.childNodes.length, 1);
 assert.equal($`<u lol wat="tt" />`.firstChild.tagName, 'U');
 assert.equal($`<u lol wat="tt" />`.firstChild.attributes.length, 2);
 assert.equal($`<u ok="1">k</u>`.childNodes.length, 1);
+assert.equal($`<u ok="1">k</u>`.firstChild.childNodes.length, 1);
 assert.equal($`<u lol=yt-r wat ></u>`.firstChild.tagName, 'U');
 assert.equal($`<u lol=yt-r wat ></u>`.firstChild.attributes.length, 2);
 

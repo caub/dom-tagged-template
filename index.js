@@ -27,8 +27,7 @@ if (typeof module==='object') {
 
 
 function $(strs, ...o) {
-	const s = strs[0].trim();
-	const stack = s ? [strs[0]] : [];
+	const stack = strs[0].trim() ? [strs[0]] : [];
 
 	o.forEach((oi, i) => {
 		if (oi!=null && oi!==false) {
@@ -140,7 +139,7 @@ function parseAttributes(element, stack, I=0, J=0) {
 					if (value !== undefined) {
 						element.setAttribute(name, value);
 
-					} else if (typeof stack[i+1]==='function' && !item.slice(j).trim()) {
+					} else if (typeof stack[i+1]==='function'/* && !item.slice(j).trim()*/) {
 
 						element.addEventListener(name.slice(2).toLowerCase(), stack[i+1]);
 						i+=2;
