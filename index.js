@@ -59,7 +59,7 @@ function $(strs, ...o) {
  * J: index inside stack[I] when it's a string
  * @return [newI, newJ, closingTag]
  */
-function parseText(container, stack, I=0, J=0) {
+function parseText(container, stack, I=0, J=0, createElement=x=>document.createElement(x)) {
 	let i=I, j=J;
 	while (i<stack.length) {
 		const item = stack[i];
@@ -82,7 +82,10 @@ function parseText(container, stack, I=0, J=0) {
 				if (item.slice(j, tagIdx).trim()) container.append(item.slice(j, tagIdx));
 
 				const [tag] = item.slice(tagIdx+1).match(/\w+/) || [];
-				const el = document.createElement(tag);
+
+				const createEl = tag==='svg'||tag==='SVG' ? x=>document.createElementNS('http://www.w3.org/2000/svg', x) : createElement
+
+				const el = createEl(tag);
 
 				const [i2, j2, isAutoClosed] = parseAttributes(el, stack, i, tagIdx+1+tag.length); // sets attributes on el
 				
@@ -93,7 +96,7 @@ function parseText(container, stack, I=0, J=0) {
 
 				if (!isAutoClosed) { // recurse with the inside of this tag
 
-					const [i3, j3, endTag] = parseText(el, stack, i, j);
+					const [i3, j3, endTag] = parseText(el, stack, i, j, createEl);
 					i = i3;
 					j = j3;
 
@@ -115,7 +118,7 @@ function parseText(container, stack, I=0, J=0) {
 /** 
  * @return [newI, newJ, isAutoClosing]
  */
-function parseAttributes(element, stack, I=0, J=0) {
+function parseAttributes(element, stack, I=0, J=0) { // todo handle svg prefixed attr , ex: .setAttributeNS('http://www.w3.org/1999/xlink', 'xlink:href', ..)
 	let i=I, j=J;
 	while (i<stack.length) {
 		const item = stack[i];

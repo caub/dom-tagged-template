@@ -1,22 +1,8 @@
-const assert = require('assert');
-const {JSDOM} = require('jsdom');
-const $ = require('../');
+var $ = typeof window==='undefined' ? require('../') : $;
 
-const jsdom = new JSDOM();
-global.window = jsdom.window;
-global.document = jsdom.window.document;
-global.Node = jsdom.window.Node;
-global.Element = jsdom.window.Element;
-global.DocumentFragment = jsdom.window.DocumentFragment;
+const assert = typeof window==='undefined' ? require('assert') : {equal: (a, b) => console.assert(a === b)};
 
-if (!Element.prototype.append || !DocumentFragment.prototype.append) { // jsdom lacking that?
-	DocumentFragment.prototype.append = Element.prototype.append = function(...a){
-		a.forEach(ai => {
-			this.appendChild(ai instanceof Node ? ai : document.createTextNode(ai+''));
-		})
-	}
-}
-
+if (typeof window==='undefined') require('./_globals');
 
 
 
@@ -59,5 +45,21 @@ const list = $`<ul onClick=${e => {e.target.style.color=`hsl(${Math.floor(360*Ma
 </ul>`.firstChild;
 
 assert.equal(list.children.length, 3);
+
+assert.equal($`<svg/>`.firstChild.tagName, 'svg');
+
+const svg = $`<svg xmlns="http://www.w3.org/2000/svg" viewBox="-10 -10 30 30"><line x1="1" y1="-8.8" x2="11.2" y2=".56"/></svg>`.firstChild;
+
+assert.equal(
+	svg.innerHTML,
+	'<line x1="1" y1="-8.8" x2="11.2" y2=".56"></line>'
+);
+
+assert.equal(
+	svg.firstElementChild.tagName,
+	'line'
+);
+
+document.body.append(svg);
 
 console.log('✔️ ok');
