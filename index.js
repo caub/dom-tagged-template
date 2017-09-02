@@ -15,18 +15,18 @@ Expr (string template expression)
 
 example usage:
 
-$`<div><u onClick=${console.log}>Hello ${'!'.repeat(4)}</u></div>`
+dom`<div><u onClick=${console.log}>Hello ${'!'.repeat(4)}</u></div>`
 */
 
+
 if (typeof module==='object') {
-	module.exports = $;
-} else {
-	if (!window.$) window.$ = $;
-	window.HTML = $;
+	module.exports = dom
+} else if (!window.$) {
+	window.$ = dom;
 }
 
 
-function $(strs, ...o) {
+function dom(strs, ...o) {
 	const stack = strs[0].trim() ? [strs[0]] : [];
 
 	o.forEach((oi, i) => {
