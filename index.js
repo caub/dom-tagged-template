@@ -132,7 +132,7 @@ function parseAttributes(element, stack, I=0, J=0) { // todo handle svg prefixed
 				const name = match[1]==='className' ? 'class' : match[1]==='htmlFor' ? 'for' : match[1];
 				j += match.index + match[0].length;
 
-				const m = item.slice(j).match(/^\s*=\s*(?:(?!")([^ /]+)|"([^"]*)")?/); // search an attribute value
+				const m = item.slice(j).match(/^\s*=\s*(?:(?!")([^ ]+)(?=(?:\/\s*>|\s))|"([^"]*)")?/); // search an attribute value
 
 				if (m) {
 					j += m.index + m[0].length;

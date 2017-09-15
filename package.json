@@ -1,6 +1,6 @@
 {
   "name": "dom-tagged-template",
-  "version": "1.0.2",
+  "version": "1.0.3",
   "description": "tagged template function for DOM building",
   "main": "index.js",
   "scripts": {
