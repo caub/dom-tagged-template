@@ -59,7 +59,7 @@ function dom(strs, ...o) {
  * J: index inside stack[I] when it's a string
  * @return [newI, newJ, closingTag]
  */
-function parseText(container, stack, I=0, J=0, createElement=x=>document.createElement(x)) {
+function parseText(container, stack, I=0, J=0, createElement = x => document.createElement(x)) {
 	let i=I, j=J;
 	while (i<stack.length) {
 		const item = stack[i];
@@ -83,7 +83,7 @@ function parseText(container, stack, I=0, J=0, createElement=x=>document.createE
 
 				const [tag] = item.slice(tagIdx+1).match(/\w+/) || [];
 
-				const createEl = tag==='svg'||tag==='SVG' ? x=>document.createElementNS('http://www.w3.org/2000/svg', x) : createElement
+				const createEl = tag==='svg' ? x=>document.createElementNS('http://www.w3.org/2000/svg', x) : tag==='foreignObject' ? x => document.createElement(x) : createElement
 
 				const el = createEl(tag);
 
