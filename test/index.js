@@ -62,4 +62,11 @@ assert.equal(
 
 document.body.append(svg);
 
+
+// style
+assert.equal(
+	$`<div style=${{color:'blue'}}/>`.firstChild.outerHTML,
+	'<div style="color: blue;"></div>'
+);
+
 console.log('✔️ ok');

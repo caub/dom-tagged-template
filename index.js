@@ -111,62 +111,70 @@ function parseText(container, stack, I=0, J=0, createElement = x => document.cre
 		}
 	}
 
-	return [i, j]; // useless to return anything, it's the outer document fragment
+	// useless to return anything, it's the outer document fragment, or a missed closing tag
 }
 
+
+const ATTR_NAME__RE = /^\s*([\w-]+)\s*/;
+const ATTR_VALUE__RE = /^\s*=\s*(?:(?!")([^ ]+)(?=(?:\/\s*>|\s))|"([^"]*)")?/;
 
 /** 
  * @return [newI, newJ, isAutoClosing]
  */
-function parseAttributes(element, stack, I=0, J=0) { // todo handle svg prefixed attr , ex: .setAttributeNS('http://www.w3.org/1999/xlink', 'xlink:href', ..)
-	let i=I, j=J;
-	while (i<stack.length) {
+function parseAttributes(element, stack, I=0, J=0) { // todo handle svg prefixed attr , ex: .setAttributeNS('http://www.w3.org/1999/xlink', 'xlink:href', ..) -- no longer needed in next svg spec?
+	let i = I, j = J;
+	while (i < stack.length) {
 		const item = stack[i];
 
-		// console.log('parse attr', item, j);
-
 		if (typeof item === 'string') {
-			const match = item.slice(j).match(/^\s*([\w-]+)\s*/); // search an attribute name
+			const match = item.slice(j).match(ATTR_NAME__RE); // search an attribute name
 
 			if (match) {
 				const name = match[1]==='className' ? 'class' : match[1]==='htmlFor' ? 'for' : match[1];
 				j += match.index + match[0].length;
 
-				const m = item.slice(j).match(/^\s*=\s*(?:(?!")([^ ]+)(?=(?:\/\s*>|\s))|"([^"]*)")?/); // search an attribute value
+				const m = item.slice(j).match(ATTR_VALUE__RE); // search an attribute value
 
 				if (m) {
 					j += m.index + m[0].length;
-
 					const value = m[1]||m[2];
 
 					if (value !== undefined) {
 						element.setAttribute(name, value);
 
-					} else if (typeof stack[i+1]==='function'/* && !item.slice(j).trim()*/) {
-
+					} else if (typeof stack[i+1]==='function') {
 						element.addEventListener(name.slice(2).toLowerCase(), stack[i+1]);
-						i+=2;
+						i += 2;
+						j = 0;
+
+					} else if (typeof stack[i+1]==='object') {
+						if (name === 'style') {
+							Object.assign(element.style, stack[i+1]);
+						} else if (name === 'data') {
+							Object.assign(element.dataset, stack[i+1]);
+						} else {
+							element.setAttribute(name, stack[i+1]);
+						}
+						i += 2;
 						j = 0;
 					}
 	
 				} else {
-
 					element.setAttribute(name, '');
 				}
-
 			} else {
 				break;
 			}
-
 		} else {
 			throw new Error(`unexpected attribute type ${item}`);
 		}
 	}
 
-	const m = stack[i].slice(j).match(/\/?\s*>/); // end of attributes
-
-	if (m) {
-		return [i, j+m.index+m[0].length, m[0].length>1]
+	if (typeof stack[i] === 'string') {
+		const m = stack[i].slice(j).match(/\/?\s*>/); // end of attributes
+		if (m) {
+			return [i, j+m.index+m[0].length, m[0].length>1];
+		}
 	}
 
 	throw new Error(`failed to parse attributes ${stack[i]}`);
