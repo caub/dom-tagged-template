@@ -1,6 +1,6 @@
 {
   "name": "dom-tagged-template",
-  "version": "1.1.0",
+  "version": "1.1.1",
   "description": "tagged template function for DOM building",
   "main": "index.js",
   "scripts": {
@@ -11,6 +11,7 @@
   "homepage": "https://github.com/caub/dom-tagged-template#readme",
   "keywords": [
     "DOM",
+    "jsx",
     "tagged",
     "template",
     "create",

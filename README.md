@@ -3,13 +3,14 @@
 ```js
 const $ = require('dom-tagged-template');
 
-const div = $`<div>
-	<u onClick=${console.log}>Hello ${'!'.repeat(4)}</u>
-</div>`.firstChild;
-
 const ul = $`<ul onClick=${e => {e.target.style.color=`hsl(${Math.floor(360*Math.random())},100%,50%)`}}>
 	${[1,2,3].map(x => $`<li>${x}</li>`)}
 </ul>`.firstChild;
+
+const div = $`<div>
+	<u onClick=${console.log}>Hello ${'!'.repeat(4)}</u>
+	${ul}
+</div>`.firstChild;
 
 const fragment = $`
 	<i>hello</i>
@@ -20,4 +21,4 @@ const fragment = $`
 
 ```
 
-[live example](https://jsfiddle.net/crl/hmth3ru7/1)
+[live example](https://jsfiddle.net/crl/hmth3ru7)

@@ -67,27 +67,22 @@ function parseText(container, stack, I=0, J=0, createElement = x => document.cre
 		if (typeof item === 'string') {
 			const tagIdx = item.indexOf('<', j);
 			
-			if (tagIdx===-1) {
-				if (item.slice(j).trim()) container.append(item.slice(j));
-				i++;
-				j = 0;
+			if (tagIdx > -1) {
 
-			} else if (item[tagIdx+1] === '/') { // </ end tag
 				if (item.slice(j, tagIdx).trim()) container.append(item.slice(j, tagIdx));
 
-				const [tag] = item.slice(tagIdx+2).match(/\w+/) || [];
-				return [i, tagIdx+2+tag.length+1, tag];
+				const [w, tag] = item.slice(tagIdx+1).match(/\/?(\w*)/);
 
-			} else {
-				if (item.slice(j, tagIdx).trim()) container.append(item.slice(j, tagIdx));
+				if (w[0] === '/') {
+					return [i, tagIdx + 2 + w.length, tag];
+				}
 
-				const [tag] = item.slice(tagIdx+1).match(/\w+/) || [];
-
-				const createEl = tag==='svg' ? x=>document.createElementNS('http://www.w3.org/2000/svg', x) : tag==='foreignObject' ? x => document.createElement(x) : createElement
+				const createEl = tag==='svg' ? x => document.createElementNS('http://www.w3.org/2000/svg', x) : 
+					tag==='foreignObject' ? x => document.createElement(x) : createElement
 
 				const el = createEl(tag);
 
-				const [i2, j2, isAutoClosed] = parseAttributes(el, stack, i, tagIdx+1+tag.length); // sets attributes on el
+				const [i2, j2, isAutoClosed] = parseAttributes(el, stack, i, tagIdx + 1 + tag.length); // sets attributes on el
 				
 				container.append(el);
 
@@ -102,6 +97,11 @@ function parseText(container, stack, I=0, J=0, createElement = x => document.cre
 
 					if (endTag!==tag) throw new Error(`non-matching tags <${tag}>..</${endTag}>`);
 				}
+
+			} else {
+				if (item.slice(j).trim()) container.append(item.slice(j));
+				i++;
+				j = 0;
 			}
 
 		} else {
@@ -137,7 +137,7 @@ function parseAttributes(element, stack, I=0, J=0) { // todo handle svg prefixed
 
 				if (m) {
 					j += m.index + m[0].length;
-					const value = m[1]||m[2];
+					const value = m[1] || m[2];
 
 					if (value !== undefined) {
 						element.setAttribute(name, value);
