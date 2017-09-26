@@ -27,7 +27,7 @@ if (typeof module==='object') {
 
 
 function dom(strs, ...o) {
-	const stack = strs[0].trim() ? [strs[0]] : [];
+	const stack = strs[0].trim() ? [typeof strs === 'string' ? strs : strs[0]] : [];
 
 	o.forEach((oi, i) => {
 		if (oi!=null && oi!==false) {
