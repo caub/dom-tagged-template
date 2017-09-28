@@ -4,8 +4,6 @@ const assert = typeof window==='undefined' ? require('assert') : {equal: (a, b) 
 
 if (typeof window==='undefined') require('./_globals');
 
-
-
 assert.equal($`p`.textContent, 'p');
 
 assert.equal($`<u ok=2/>`.childNodes.length, 1);
@@ -21,6 +19,9 @@ assert.equal($`<u>test</u>`.lastChild.textContent, 'test');
 
 assert.equal($`<u onMouseMove=${e=>{}}>${1+1}</u>`.textContent, '2');
 assert.equal($`<u>hello ${'world'}!</u>`.firstChild.textContent, 'hello world!');
+
+assert.equal($`<u>  <u ok=2/> </u>`.firstChild.outerHTML, `<u><u ok="2"></u></u>`);
+
 
 
 const fragment = $`
