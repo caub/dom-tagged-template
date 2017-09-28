@@ -21,7 +21,7 @@ assert.equal($`<u onMouseMove=${e=>{}}>${1+1}</u>`.textContent, '2');
 assert.equal($`<u>hello ${'world'}!</u>`.firstChild.textContent, 'hello world!');
 
 assert.equal($`<u>  <u ok=2/> </u>`.firstChild.outerHTML, `<u><u ok="2"></u></u>`);
-
+assert.equal($`<u ok=2>\t <i/> </u>`.firstChild.outerHTML, `<u ok="2"><i></i></u>`);
 
 
 const fragment = $`

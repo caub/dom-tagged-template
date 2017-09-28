@@ -116,7 +116,7 @@ function parseText(container, stack, I=0, J=0, createElement = x => document.cre
 
 
 const ATTR_NAME__RE = /^\s*([\w-]+)\s*/;
-const ATTR_VALUE__RE = /^\s*=\s*(?:(?!")([^ /]+)(?=\/\s*>|\s+)|"([^"]*)")?/;
+const ATTR_VALUE__RE = /^\s*=\s*(?:(?!")([^ />]+)(?=\/?\s*>|\s+)|"([^"]*)")?/;
 
 /** 
  * @return [newI, newJ, isAutoClosing]
