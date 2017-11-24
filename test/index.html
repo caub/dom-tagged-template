@@ -25,7 +25,7 @@ fetch(url)
 .then(r => r.blob())
 .then(blob => {
 	var u = URL.createObjectURL(blob);
-	var img = $`<img class="lol" src=${u} onload=${() => URL.revokeObjectURL(blob)} />`;
+	var img = dom`<img class="lol" src=${u} onload=${() => URL.revokeObjectURL(blob)} />`;
 
 	document.body.append(img);
 });

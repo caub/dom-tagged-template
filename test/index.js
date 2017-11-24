@@ -1,4 +1,4 @@
-var $ = typeof window==='undefined' ? require('../') : $;
+var $ = typeof window==='undefined' ? require('../') : window.dom;
 
 const assert = typeof window==='undefined' ? require('assert') : {equal: (a, b) => console.assert(a === b)};
 

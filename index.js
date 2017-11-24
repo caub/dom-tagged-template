@@ -18,13 +18,11 @@ example usage:
 dom`<div><u onClick=${console.log}>Hello ${'!'.repeat(4)}</u></div>`
 */
 
-
-if (typeof module==='object') {
-	module.exports = dom
-} else if (!window.$) {
-	window.$ = dom;
-}
-
+(function (global, factory) {
+	typeof exports === 'object' && typeof module !== 'undefined' ? module.exports = factory() :
+	typeof define === 'function' && define.amd ? define(factory) :
+	(global.dom = factory());
+}(this, function () {
 
 function dom(strs, ...o) {
 	const stack = strs[0].trim() ? [typeof strs === 'string' ? strs : strs[0]] : [];
@@ -180,3 +178,7 @@ function parseAttributes(element, stack, I=0, J=0) { // todo handle svg prefixed
 	throw new Error(`failed to parse attributes ${stack[i]}`);
 	// shouldn't reach this point
 }
+
+return dom;
+
+}));
